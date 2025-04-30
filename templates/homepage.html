@@ -1,23 +1,29 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Pet Adoption Agency</title>
-</head>
-<body>
-  <h1>Adoptable Pets</h1>
-  <ul>
-    {% for pet in pets %}
-      <li>
-        <strong>{{ pet.name }}</strong> - {{ pet.species }}<br>
-        {% if pet.photo_url %}
-          <img src="{{ pet.photo_url }}" alt="Photo of {{ pet.name }}" style="max-height:100px;">
-        {% endif %}
+{% extends "base.html" %}
+
+{% block title %}Adoptable Pets{% endblock %}
+
+{% block content %}
+<div class="row">
+  {% for pet in pets %}
+  <div class="col-md-4 mb-3">
+    <div class="card h-100">
+      {% if pet.photo_url %}
+      <img src="{{ pet.photo_url }}" class="card-img-top" alt="Photo of {{ pet.name }}">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="{{ url_for('show_edit_pet', pet_id=pet.id) }}" class="text-decoration-none text-dark">
+            {{ pet.name }}
+          </a>
+        </h5>
         {% if pet.available %}
-          <p><strong>Available</strong></p>
+        <p class="text-success fw-bold">Available</p>
+        {% else %}
+        <p class="text-danger">Adopted</p>
         {% endif %}
-      </li>
-    {% endfor %}
-  </ul>
-</body>
-</html>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
