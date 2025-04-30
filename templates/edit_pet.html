@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Add New Pet{% endblock %}
+{% block title %}Edit {{ pet.name }}{% endblock %}
 
 {% block content %}
-<h2>Add a New Pet</h2>
+<h2>Edit {{ pet.name }}</h2>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
@@ -29,6 +29,12 @@
 
 <form method="POST">
     {% include "_pet_form_fields.html" %}
-    <button type="submit" class="btn btn-primary">Add Pet</button>
+
+    <div class="form-check mb-3">
+        {{ form.available(class="form-check-input") }}
+        {{ form.available.label(class="form-check-label") }}
+    </div>
+
+    <button type="submit" class="btn btn-success">Update Pet</button>
 </form>
 {% endblock %}
