@@ -5,30 +5,20 @@
 {% block content %}
 <h2>Add a New Pet</h2>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-<ul class="flashes">
-    {% for category, message in messages %}
-    <li class="flash {{ category }}">{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-
 {% if form.errors %}
 <div class="alert alert-danger">
     <ul>
         {% for field, errors in form.errors.items() %}
-            {% for error in errors %}
-                <li><strong>{{ field }}:</strong> {{ error }}</li>
-            {% endfor %}
+        {% for error in errors %}
+        <li><strong>{{ field }}:</strong> {{ error }}</li>
+        {% endfor %}
         {% endfor %}
     </ul>
 </div>
 {% endif %}
 
-<form method="POST">
-    {% include "_pet_form_fields.html" %}
+<form method="POST" enctype="multipart/form-data">
+    {% include "pet_form_fields.html" %}
     <button type="submit" class="btn btn-primary">Add Pet</button>
 </form>
 {% endblock %}

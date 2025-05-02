@@ -3,25 +3,33 @@
 {% block title %}Adoptable Pets{% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="pet-grid">
   {% for pet in pets %}
-  <div class="col-md-4 mb-3">
-    <div class="card h-100">
+  <div class="pet-card">
+    <div class="pet-img-wrapper">
       {% if pet.photo_url %}
-      <img src="{{ pet.photo_url }}" class="card-img-top" alt="Photo of {{ pet.name }}">
+      {% if pet.photo_url.startswith('http') %}
+      <img src="{{ pet.photo_url }}" class="pet-img" alt="Photo of {{ pet.name }}">
+      {% else %}
+      <img src="{{ url_for('static', filename=pet.photo_url) }}" class="pet-img" alt="Photo of {{ pet.name }}">
       {% endif %}
-      <div class="card-body">
-        <h5 class="card-title">
-          <a href="{{ url_for('show_edit_pet', pet_id=pet.id) }}" class="text-decoration-none text-dark">
-            {{ pet.name }}
-          </a>
-        </h5>
-        {% if pet.available %}
-        <p class="text-success fw-bold">Available</p>
-        {% else %}
-        <p class="text-danger">Adopted</p>
-        {% endif %}
-      </div>
+      {% else %}
+      <img src="{{ url_for('static', filename='images/default_pet_pic.png') }}" class="pet-img"
+        alt="Default image: Honeybees outside a hive that says 'We're bzzzy getting camera ready!'">
+      {% endif %}
+    </div>
+
+    <div class="pet-card-body">
+      <h5 class="pet-card-title">
+        <a href="{{ url_for('show_edit_pet', pet_id=pet.id) }}" class="pet-card-link">
+          {{ pet.name }}
+        </a>
+      </h5>
+      {% if pet.available %}
+      <p class="pet-status available">Available</p>
+      {% else %}
+      <p class="pet-status adopted">Adopted</p>
+      {% endif %}
     </div>
   </div>
   {% endfor %}

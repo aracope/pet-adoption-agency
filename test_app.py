@@ -42,7 +42,7 @@ def test_add_pet_form(client):
         "name": "Fido",
         "species": "dog",
         "photo_url": "",
-        "age": "2",
+        "age": 2,
         "notes": "",
     }
     response = client.post("/add", data=data, follow_redirects=True)
@@ -75,3 +75,22 @@ def test_edit_pet(client):
         assert updated_pet.photo_url == "http://example.com/photo.jpg"
         assert updated_pet.notes == "Loves belly rubs"
         assert updated_pet.available is True
+
+def test_add_pet_validation_error(client):
+    """Form should show errors if required fields are missing."""
+    response = client.post("/add", data={"name": ""}, follow_redirects=True)
+    assert response.status_code == 200
+    assert b"This field is required." in response.data
+
+def test_flash_messages_on_add(client):
+    """Flash message should appear after adding a pet."""
+    data = {
+        "name": "Rover",
+        "species": "dog",
+        "age": 3,
+        "photo_url": "",
+        "notes": ""
+    }
+    response = client.post("/add", data=data, follow_redirects=True)
+    print(response.data.decode())  # Temporary: print full HTML to debug
+    assert b"Rover added successfully!" in response.data
